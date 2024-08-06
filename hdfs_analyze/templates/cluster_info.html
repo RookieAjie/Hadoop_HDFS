@@ -1,0 +1,81 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    cluster_info
+{% endblock %}
+
+{% block fundamentalData %}
+    href="/{{ Model.id }}/clusterinfo/"
+    style = "font-weight:bold;color:grey"
+{% endblock %}
+
+{% block DNData %}
+    href="/cluster/nodes/"
+{% endblock %}
+
+{% block DNList %}
+    href="/cluster/nodes/list/"
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+
+        <div class="panel panel-info">
+            <!-- Default panel contents -->
+            <div class="panel-heading">
+                <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+                HDFS集群信息
+            </div>
+
+            <!-- Table -->
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th style="text-align: center;vertical-align: middle;width: 40%">集群ID</th>
+                    <th style="text-align: center;vertical-align: middle">总容量</th>
+                    <th style="text-align: center;vertical-align: middle">已使用</th>
+                    <th style="text-align: center;vertical-align: middle">剩余容量</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in ClusterInfo %}
+                    <tr style="text-align: center;vertical-align: middle">
+                        <th style="text-align: center;vertical-align: middle">{{ Model.cluster_id }}</th>
+                        <td>{{ item.total_capacity }}G</td>
+                        <td style="color: firebrick">{{ item.used_capacity }}G</td>
+                        <td>{{ item.remaining_capacity }}G</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+
+        <div class="panel panel-info">
+            <!-- Default panel contents -->
+            <div class="panel-heading">
+                <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+                NameNodes信息
+            </div>
+
+            <!-- Table -->
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th style="text-align: center;vertical-align: middle;width: 60%">NameNode IP地址</th>
+                    <th style="text-align: center;vertical-align: middle">角色</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in NNInfo %}
+                    <tr style="text-align: center;vertical-align: middle">
+                        <td>{{ item.nn_ip }}</td>
+                        <td {% if item.nn_role == 'active' %}style="color: green;font-size: 16px"{% endif %} >{{ item.nn_role }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+{% endblock %}

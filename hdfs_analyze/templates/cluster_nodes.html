@@ -1,0 +1,58 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    cluster_nodes
+{% endblock %}
+
+{% block fundamentalData %}
+    href="/{{ Model.id }}/clusterinfo/"
+{% endblock %}
+
+{% block DNData %}
+    href="/cluster/nodes/"
+    style = "font-weight:bold;color:grey"
+{% endblock %}
+
+{% block DNList %}
+    href="/cluster/nodes/list/"
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+
+        <div class="panel panel-warning">
+            <!-- Default panel contents -->
+            <div class="panel-heading">
+                <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+                HDFS DataNodes信息
+            </div>
+
+            <!-- Table -->
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th style="text-align: center;vertical-align: middle">集群ID</th>
+                    <th style="text-align: center;vertical-align: middle">数据节点总数</th>
+                    <th style="text-align: center;vertical-align: middle">活跃节点数</th>
+                    <th style="text-align: center;vertical-align: middle">死亡节点数</th>
+                    <th style="text-align: center;vertical-align: middle">已退役节点数</th>
+                    <th style="text-align: center;vertical-align: middle">退役中节点数</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in DNInfo %}
+                    <tr style="text-align: center;vertical-align: middle">
+                        <th style="text-align: center;vertical-align: middle">{{ Model.cluster_id }}</th>
+                        <td>{{ item.total_nodes }}</td>
+                        <td style="color: #4cae4c">{{ item.live_nodes }}</td>
+                        <td style="color: red">{{ item.dead_nodes }}</td>
+                        <td>{{ item.decommissioned_nodes }}</td>
+                        <td>{{ item.decommissioning_nodes }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,120 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    cluster_nodes_list
+{% endblock %}
+
+{% block fundamentalData %}
+    href="/{{ Model.id }}/clusterinfo/"
+{% endblock %}
+
+{% block DNData %}
+    href="/cluster/nodes/"
+{% endblock %}
+
+{% block DNList %}
+    href="/cluster/nodes/list/"
+    style = "font-weight:bold;color:grey"
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+
+        <div class="panel panel-success">
+            <!-- Default panel contents -->
+            <div class="panel-heading">
+                <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+                Live Nodes
+            </div>
+
+            <!-- Table -->
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th style="text-align: center;vertical-align: middle;width: 30%">集群ID</th>
+                    <th style="text-align: center;vertical-align: middle">活跃节点列表</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr style="text-align: center;vertical-align: middle">
+                        <th style="text-align: center;vertical-align: middle">{{ Model.cluster_id }}</th>
+                        <td>{{ live_nodes.0 }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="panel panel-danger">
+            <!-- Default panel contents -->
+            <div class="panel-heading">
+                <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+                Dead Nodes
+            </div>
+
+            <!-- Table -->
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th style="text-align: center;vertical-align: middle;width: 30%">集群ID</th>
+                    <th style="text-align: center;vertical-align: middle">死亡节点列表</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr style="text-align: center;vertical-align: middle">
+                        <th style="text-align: center;vertical-align: middle">{{ Model.cluster_id }}</th>
+                        <td>{{ dead_nodes.0 }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="panel panel-warning">
+            <!-- Default panel contents -->
+            <div class="panel-heading">
+                <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+                Decommissioning Nodes
+            </div>
+
+            <!-- Table -->
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th style="text-align: center;vertical-align: middle;width: 30%">集群ID</th>
+                    <th style="text-align: center;vertical-align: middle">退役中节点列表</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr style="text-align: center;vertical-align: middle">
+                        <th style="text-align: center;vertical-align: middle">{{ Model.cluster_id }}</th>
+                        <td>{{ decommissioning_nodes.0 }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    
+        <div class="panel panel-info">
+            <!-- Default panel contents -->
+            <div class="panel-heading">
+                <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+                Decommissioned Nodes
+            </div>
+
+            <!-- Table -->
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th  style="text-align: center;vertical-align: middle;width: 30%">集群ID</th>
+                    <th style="text-align: center;vertical-align: middle">已退役节点列表</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr style="text-align: center;vertical-align: middle">
+                        <th style="text-align: center;vertical-align: middle">{{ Model.cluster_id }}</th>
+                        <td>{{ decommissioned_nodes.0 }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+{% endblock %}

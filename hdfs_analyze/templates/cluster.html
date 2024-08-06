@@ -1,0 +1,156 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>cluster</title>
+    <link rel="stylesheet" href="{% static 'plugins/bootstrap-3.4.1/css/bootstrap.min.css' %}">
+    <style>
+        .navbar {
+            border-radius: 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="navbar navbar-default">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">HDFS集群监控</a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#">登录</a></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false"> 尹宇杰 <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">个人资料</a></li>
+                        <li><a href="#">我的信息</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">注销</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div>
+    <div class="container">
+        <div style="width: 300px;margin-bottom: 10px">
+            <form method="POST" class="input-group">
+                {% csrf_token %}
+                <input type="text" style="border: #4cae4c solid ;width: 250px;height: 40px" class="form-control" name="cluster_nn_num"
+                       placeholder="请输入集群NameNode数量..."
+                       required>
+                <span class="input-group-btn" style="padding-left: -1px">
+                    <button class="btn btn-success" type="submit">
+                        <span class="glyphicon glyphicon-plus-sign" aria-hidden="true" style="height: 26px;padding-top: 5px;padding-right: 2px"></span> 添加集群
+                    </button>
+                </span>
+            </form>
+        </div>
+
+
+        <div class="panel panel-primary">
+            <!-- Default panel contents -->
+            <div class="panel-heading">
+                <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+                已添加的HDFS集群
+            </div>
+
+            <!-- Table -->
+            <table class="table table-bordered" style="text-align: center">
+                <thead>
+                <tr>
+                    <th style="text-align: center">序号</th>
+                    <th style="text-align: center">集群名称</th>
+                    <th style="text-align: center">集群ID</th>
+                    <th style="text-align: center">集群信息监控</th>
+                    <th style="text-align: center">删除</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in cluster %}
+                    <tr>
+                        <th style="text-align: center;vertical-align: middle">{{ item.id }}</th>
+                        <td style="text-align: center;vertical-align: middle"><a
+                                href="/{{ item.id }}/clusterinfo/">{{ item.cluster_name }}</a></td>
+                        <td style="text-align: center;vertical-align: middle">{{ item.cluster_id }}</td>
+                        <td style="text-align: center;vertical-align: middle">
+                            <a class="btn btn-info btn-xs" id="startCelery">开始采集</a>
+                            <a class="btn btn-warning btn-xs" id="stopCelery">停止采集</a>
+                        </td>
+                        <td style="text-align: center;vertical-align: middle">
+                            <a href="/cluster/{{ item.id }}/delete/" class="btn btn-danger btn-xs" onclick="return confirmDelete(this);">
+                                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-3.4.1/js/bootstrap.min.js' %}"></script>
+<script>
+    $(document).ready(function () {
+        $('#startCelery').click(function () {
+            // 发送 AJAX 请求给后端 API
+            $.ajax({
+                url: '/cluster/start-celery/',
+                type: 'GET',
+                success: function (response) {
+                    console.log('Celery started successfully.');
+                    showSuccessAlert();
+                },
+                error: function (error) {
+                    console.error('Failed to start Celery:', error);
+                }
+            });
+        });
+
+        function showSuccessAlert() {
+            alert('Celery 定时任务启动成功。');
+        }
+        $('#stopCelery').click(function () {
+            // 发送 AJAX 请求给后端 API
+            $.ajax({
+                url: '/cluster/stop-celery/',
+                type: 'GET',
+                success: function (response) {
+                    console.log('Celery stopped successfully.');
+                    showSuccess();
+                },
+                error: function (error) {
+                    console.error('Failed to stopped Celery:', error);
+                }
+            });
+        });
+
+        function showSuccess() {
+            alert('Celery 定时任务停止成功。');
+        }
+    });
+
+    function confirmDelete(element) {
+        return confirm('确定要删除吗？');
+    }
+</script>
+
+</body>
+</html>
